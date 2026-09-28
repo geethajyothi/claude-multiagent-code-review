@@ -22,11 +22,13 @@ async function main() {
     process.exit(1);
   }
 
-  const prNumber = Number.parseInt(prStr, 10);
-  if (!Number.isInteger(prNumber) || prNumber <= 0) {
-    console.error(`Invalid PR number: "${prStr}". Must be a positive integer.`);
+  const prNumberPattern = /^[1-9]\d*$/;
+  if (!prNumberPattern.test(prStr)) {
+    console.error(`Invalid PR number: "${prStr}". Must be a positive integer, e.g. 12345.`);
+    console.error('Usage: npm run dev -- <owner> <repo> <pr-number>');
     process.exit(1);
   }
+  const prNumber = Number(prStr);
 
   // ----- Validate authentication (choose ONE method) -----
   const hasAnthropicKey = Boolean(process.env.ANTHROPIC_API_KEY);
